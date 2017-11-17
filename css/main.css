@@ -2,6 +2,66 @@ body {
   color: #554E49;
 }
 
-#app {
-  padding: 0 25%;
+#header {
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+#header img {
+  max-height: 60px;
+  margin-bottom: 1em;
+}
+
+#header h1 {
+  text-transform: uppercase;
+  font-weight: normal;
+  font-size: 2em;
+}
+
+#tile {
+  width: 440px;
+}
+
+#more-info-container {
+  padding-top: 30px;
+}
+
+.item-info-image {
+  width: 100%;
+}
+
+.info-header {
+  padding: 9px 20px 7px;
+}
+
+.info-title {
+  font-size: 20px;
+  margin: 0;
+}
+
+.item-info-details {
+  padding: 0 20px 20px;
+}
+
+.description-text {
+  padding-bottom: 5px;
+}
+
+.item-info-actions {
+  background-color: #f1f2f3;
+  text-align: center;
+  height: 72px;
+  padding: 20px 60px;
+}
+
+.item-info-actions .button {
+  background-color: #d92c27;
+  color: #fff;
+  border: 1px solid black;
+  border-radius: 2px;
+  padding: 5px 10px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
 }
