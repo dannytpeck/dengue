@@ -1,4 +1,4 @@
-# project-dengue
+# Project Dengue
 
 Prototype for a CIE Editor
 
@@ -7,7 +7,7 @@ Prototype for a CIE Editor
 Clone this repo, install dependencies, then start developing with webpack/browser-sync using these steps:
 
 ```
-	> git clone https://github.com/dannytpeck/project-dengue.git
+	> git clone https://github.com/dannytpeck/dengue.git
 	> cd project-dengue
 	> npm install
 	> npm start
