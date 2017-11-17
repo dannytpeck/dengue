@@ -11,7 +11,7 @@ class App extends Component {
     this.state = {
       imageSrc: 'https://d1dyf6uqjwvcrk.cloudfront.net/cfs-file.ashx/__key/CommunityServer-Components-PostAttachments/00-19-63-91-59/Ember_5F00_Tile.png',
       title: 'Your mobile experience is here',
-      description: '<div style="font-size: 14px; line-height: 1.3em"><div class="ember-content" style="padding-bottom: 20px;"> <p><em>Ember</em> is your digital companion. It will enable you to become the best version of yourself.</p> <h3>Ember allows you to:</h3> <ul> <li>Prioritize what matters most to you</li> <li>Pick your goals and monitor your progress</li> <li>Access interesting and relevant content + videos</li> <li>Participate in self-guided learning</li> <li>Book your screening &amp; coaching appointments on-the-go</li></ul></div><div class="app-store-container" style="position: relative; height: 80px; padding: 0 0; margin-bottom: 0;"> <div class="app-store-icon ios-download-icon" style="width: 50%; height: 100%; display: inline-block; float: left; padding-top: 16px;"> <a href="" style="margin: 0 0 0 48px;"><img src="https://mywellnessnumbers.com/HumanPerformance/images/ios-download-icon.png" alt="Download ember on the iOS App Store"></a> </div> <div class="app-store-icon android-download-icon" style="width: 50%; height: 100%; display: inline-block; float: left; padding-top: 16px;"> <a href="" style="margin: 0 48px 0 16px;"><img src="https://mywellnessnumbers.com/HumanPerformance/images/android-download-icon.png" alt="Download ember on the Google Play Store"></a></div></div></div>'
+      description: '<div style="font-size: 14px; line-height: 1.3em"><div class="ember-content" style="padding-bottom: 20px;"><p><em>Ember</em> is your digital companion. It will enable you to become the best version of yourself.</p> <h3>Ember allows you to:</h3><ul><li>Prioritize what matters most to you</li><li>Pick your goals and monitor your progress</li> <li>Access interesting and relevant content + videos</li> <li>Participate in self-guided learning</li> <li>Book your screening &amp; coaching appointments on-the-go</li></ul></div><div class="app-store-container" style="position: relative; height: 80px; padding: 0 0; margin-bottom: 0;"><div class="app-store-icon ios-download-icon" style="width: 50%; height: 100%; display: inline-block; float: left; padding-top: 16px;"><a href="" style="margin: 0 0 0 48px;"><img src="https://mywellnessnumbers.com/HumanPerformance/images/ios-download-icon.png" alt="Download ember on the iOS App Store"></a> </div> <div class="app-store-icon android-download-icon" style="width: 50%; height: 100%; display: inline-block; float: left; padding-top: 16px;"> <a href="" style="margin: 0 48px 0 16px;"><img src="https://mywellnessnumbers.com/HumanPerformance/images/android-download-icon.png" alt="Download ember on the Google Play Store"></a></div></div></div>'
     };
 
     this.getToken = this.getToken.bind(this);
@@ -29,7 +29,6 @@ class App extends Component {
       headers: headers,
       dataType: 'json',
       success: (data) => {
-        console.log(data);
         const event = data.Data[0];
 
         this.setState({
@@ -65,7 +64,6 @@ class App extends Component {
       data: JSON.stringify(data),
       dataType: 'json',
       success: (data) => {
-        console.log(data);
         this.getEventData(eventId, data.access_token);
       }
     });
