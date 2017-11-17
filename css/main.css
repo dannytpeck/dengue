@@ -2,6 +2,16 @@ body {
   color: #554E49;
 }
 
+h3 {
+  font-size: 1.17em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+p {
+  margin-top: 5px;
+}
+
 #header {
   text-align: center;
   margin-top: 1em;
@@ -21,6 +31,7 @@ body {
 
 #tile-preview {
   width: 440px;
+  color: #555 !important;
 }
 
 #more-info-container {
