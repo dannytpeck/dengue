@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import TitleBox from './title_box';
+import DescriptionBox from './description_box';
 
 class TilePreview extends Component {
   constructor(props) {
     super(props);
-  }
-
-  createHtml() {
-    return { __html: this.props.description };
   }
 
   render() {
@@ -19,10 +16,8 @@ class TilePreview extends Component {
         <div id="more-info-container">
 
           <TitleBox text={this.props.title} />
+          <DescriptionBox text={this.props.description} />
 
-          <div className="item-info-details">
-            <div className="description-text" dangerouslySetInnerHTML={this.createHtml()}></div>
-          </div>
           <div className="item-info-actions">
             <button className="button button-primary">Close</button>
           </div>
