@@ -2,7 +2,7 @@
 
 Prototype for a CIE Editor
 
-###Getting Started###
+### Getting Started ###
 
 Clone this repo, install dependencies, then start developing with webpack/browser-sync using these steps:
 
