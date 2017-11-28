@@ -15,15 +15,16 @@ class App extends Component {
       description: '<div style="font-size: 14px; line-height: 1.3em"><div class="ember-content" style="padding-bottom: 20px;"><p><em>Ember</em> is your digital companion. It will enable you to become the best version of yourself.</p><h3>Ember allows you to:</h3><ul><li>Prioritize what matters most to you</li><li>Pick your goals and monitor your progress</li><li>Access interesting and relevant content + videos</li><li>Participate in self-guided learning</li><li>Book your screening &amp; coaching appointments on-the-go</li></ul></div><div class="app-store-container" style="position: relative; height: 80px; padding: 0 0; margin-bottom: 0;"><div class="app-store-icon ios-download-icon" style="width: 50%; height: 100%; display: inline-block; float: left; padding-top: 16px;"><a href="" style="margin: 0 0 0 48px;"><img src="https://mywellnessnumbers.com/HumanPerformance/images/ios-download-icon.png" alt="Download ember on the iOS App Store"></a></div><div class="app-store-icon android-download-icon" style="width: 50%; height: 100%; display: inline-block; float: left; padding-top: 16px;"><a href="" style="margin: 0 48px 0 16px;"><img src="https://mywellnessnumbers.com/HumanPerformance/images/android-download-icon.png" alt="Download ember on the Google Play Store"></a></div></div></div>',
       points: '100',
       displayPriority: '',
-      targeting: ''
+      targeting: '',
+      maxOccurrences: ''
     };
 
     this.getToken = this.getToken.bind(this);
-    this.getImageUrl = this.getImageUrl.bind(this);
+    this.getInitialData = this.getInitialData.bind(this);
     this.getEventData = this.getEventData.bind(this);
   }
 
-  getEventData(eventId, headers, imageUrl) {
+  getEventData(eventId, headers, imageUrl, maxOccurrences) {
     const url = `https://api.limeade.com/api/admin/activity/-${eventId}`;
 
     $.ajax(url, {
@@ -39,13 +40,14 @@ class App extends Component {
           points: event.ActivityReward.Value,
           displayPriority: event.DisplayPriority,
           targeting: event.Targeting,
+          maxOccurrences: maxOccurrences,
           hasLoaded: true
         });
       }
     });
   }
 
-  getImageUrl(eventId, token) {
+  getInitialData(eventId, token) {
     const url = `https://api.limeade.com/api/activity/${eventId}/Get?types=1&status=1&attributes=1&contents=15`;
     const headers = {
       Authorization: `Bearer ${token}`
@@ -55,8 +57,10 @@ class App extends Component {
       headers: headers,
       dataType: 'json',
       success: (data) => {
-        const imageUrl = data.Data[0].MediumImageSrc;
-        this.getEventData(eventId, headers, imageUrl);
+        const event = data.Data[0];
+        const imageUrl = event.MediumImageSrc;
+        const maxOccurrences = event.Reward.MaxCount;
+        this.getEventData(eventId, headers, imageUrl, maxOccurrences);
       }
     });
   }
@@ -85,7 +89,7 @@ class App extends Component {
       data: JSON.stringify(data),
       dataType: 'json',
       success: (data) => {
-        this.getImageUrl(eventId, data.access_token);
+        this.getInitialData(eventId, data.access_token);
       }
     });
   }
