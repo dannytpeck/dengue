@@ -15,7 +15,7 @@ class TilePreview extends Component {
         </div>
         <div id="more-info-container">
 
-          <TitleBox text={this.props.title} />
+          <TitleBox text={this.props.title} points={this.props.points} />
           <DescriptionBox text={this.props.description} />
 
           <div className="item-info-actions">

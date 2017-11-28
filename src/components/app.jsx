@@ -9,10 +9,13 @@ class App extends Component {
     super(props);
 
     this.state = {
+      hasLoaded: false,
       imageSrc: 'https://d1dyf6uqjwvcrk.cloudfront.net/cfs-file.ashx/__key/CommunityServer-Components-PostAttachments/00-19-63-91-59/Ember_5F00_Tile.png',
       title: 'Your mobile experience is here',
       description: '<div style="font-size: 14px; line-height: 1.3em"><div class="ember-content" style="padding-bottom: 20px;"><p><em>Ember</em> is your digital companion. It will enable you to become the best version of yourself.</p><h3>Ember allows you to:</h3><ul><li>Prioritize what matters most to you</li><li>Pick your goals and monitor your progress</li><li>Access interesting and relevant content + videos</li><li>Participate in self-guided learning</li><li>Book your screening &amp; coaching appointments on-the-go</li></ul></div><div class="app-store-container" style="position: relative; height: 80px; padding: 0 0; margin-bottom: 0;"><div class="app-store-icon ios-download-icon" style="width: 50%; height: 100%; display: inline-block; float: left; padding-top: 16px;"><a href="" style="margin: 0 0 0 48px;"><img src="https://mywellnessnumbers.com/HumanPerformance/images/ios-download-icon.png" alt="Download ember on the iOS App Store"></a></div><div class="app-store-icon android-download-icon" style="width: 50%; height: 100%; display: inline-block; float: left; padding-top: 16px;"><a href="" style="margin: 0 48px 0 16px;"><img src="https://mywellnessnumbers.com/HumanPerformance/images/android-download-icon.png" alt="Download ember on the Google Play Store"></a></div></div></div>',
-      hasLoaded: false
+      points: '100',
+      displayPriority: '',
+      targeting: ''
     };
 
     this.getToken = this.getToken.bind(this);
@@ -20,7 +23,8 @@ class App extends Component {
   }
 
   getEventData(eventId, token) {
-    const url = `https://api.limeade.com/api/activity/${eventId}/Get?types=5&status=2&attributes=1&contents=32319`;
+    //const url = `https://api.limeade.com/api/activity/${eventId}/Get?types=5&status=2&attributes=1&contents=32319`;
+    const url = `https://api.limeade.com/api/admin/activity/-${eventId}`;
     const headers = {
       Authorization: `Bearer ${token}`
     };
@@ -30,12 +34,12 @@ class App extends Component {
       headers: headers,
       dataType: 'json',
       success: (data) => {
-        const event = data.Data[0];
+        const event = data.Data;
 
         this.setState({
-          imageSrc: event.MediumImageSrc,
-          title: event.Title,
-          description: event.HtmlDescription,
+          imageSrc: `https://limeade.com/${event.ChallengeLogoURL}`,
+          title: event.Name,
+          description: event.AboutChallenge,
           hasLoaded: true
         });
       }
@@ -142,6 +146,101 @@ class App extends Component {
     }
     */
 
+    // Create a CSV for CIE uploads
+    const createCSV = () => {
+      let data = [[
+        'EmployerName',
+        'EventId',
+        'EventName',
+        'DisplayPiority',
+        'RewardType',
+        'PointsAwarded',
+        'RewardDescription',
+        'AllowSameDayDuplicates',
+        'IsOngoing',
+        'IsDisabled',
+        'ShowInProgram',
+        'IsSelfReport',
+        'DataFeedMode',
+        'Notify',
+        'ButtonText',
+        'TargetUrl',
+        'EventImageUrl',
+        'MaxOccurrences',
+        'StartDate',
+        'EndDate',
+        'ViewPages',
+        'Dimensions',
+        'ShortDescription',
+        'HtmlDescription',
+        'SubgroupId',
+        'Field1Name',
+        'Field1Value',
+        'Field2Name',
+        'Field2Value',
+        'Field3Name',
+        'Field3Value'
+      ]];
+
+      const eventName = '';
+      const htmlDescription = '';
+      const employerName = '';
+      const eventId = '';
+      const pointsAwarded = '';
+      const eventImageUrl = '';
+      const maxOccurrences = '';
+
+      const cie = [
+        employerName,
+        eventId,
+        '"' + eventName + '"',
+        '',
+        'IncentivePoints',
+        pointsAwarded,
+        '',
+        '0',
+        '0',
+        '0',
+        '1',
+        '0',
+        '0',
+        '0',
+        '',
+        '',
+        eventImageUrl,
+        maxOccurrences,
+        '',
+        '',
+        '',
+        '',
+        '',
+        '"' + htmlDescription.replace(/"/g, '""') + '"',
+      ];
+
+      data.push(cie);
+
+      return data;
+    };
+
+    const uploadToLimeade = (type) => {
+      const csv = createCSV(type);
+      const headers = csv[0].join(',');
+      const url = 'http://mywellnessnumbers.sftp.adurolife.com/limeade-upload/';
+
+      const oneIncentiveEvent = csv[1].join(',');
+
+      const params = {
+        e: $('#employer-name').val(),
+        psk: $('#limeadePSK').val(),
+        data: headers + '\n' + oneIncentiveEvent,
+        type: 'IncentiveEvents'
+      };
+
+      $.post(url, params).done(function(response) {
+        console.log(response);
+      });
+
+    };
 
   }
 
@@ -174,7 +273,7 @@ class App extends Component {
           </div>
 
           <div className="col-5 offset-1">
-            <TilePreview imageSrc={this.state.imageSrc} title={this.state.title} description={this.state.description} />
+            <TilePreview imageSrc={this.state.imageSrc} title={this.state.title} description={this.state.description} points={this.state.points} />
           </div>
         </div>
 

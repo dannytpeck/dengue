@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import PointsBox from './points_box';
 
-class TitleBox extends Component {
+class PointsBox extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      text: '',
+      points: '',
       editing: false,
       hasBeenEdited: false
     };
@@ -18,7 +17,7 @@ class TitleBox extends Component {
   }
 
   ComponentDidMount() {
-    this.setState({ text: this.props.text });
+    this.setState({ text: this.props.points });
   }
 
   toggleEdit(e) {
@@ -30,14 +29,14 @@ class TitleBox extends Component {
   revertChanges() {
     this.setState({
       hasBeenEdited: false,
-      text: this.props.title
+      points: this.props.points
     });
   }
 
   saveChanges(event) {
     this.setState({
       hasBeenEdited: true,
-      text: event.target.value
+      points: event.target.value
     });
   }
 
@@ -57,34 +56,33 @@ class TitleBox extends Component {
     }
   }
 
-  renderTitleInput() {
+  renderPointsInput() {
     return (
       this.state.hasBeenEdited ?
-      <input type="text" className="form-control info-title" value={this.state.text} onChange={this.saveChanges} onKeyDown={this.handleKeyDown} onBlur={this.toggleEdit} autoFocus={true} /> :
-      <input type="text" className="form-control info-title" value={this.props.text} onChange={this.saveChanges} onKeyDown={this.handleKeyDown} onBlur={this.toggleEdit} autoFocus={true} />
+      <input type="text" className="form-control info-points" value={this.state.points} onChange={this.saveChanges} onKeyDown={this.handleKeyDown} onBlur={this.toggleEdit} autoFocus={true} /> :
+      <input type="text" className="form-control info-points" value={this.props.points} onChange={this.saveChanges} onKeyDown={this.handleKeyDown} onBlur={this.toggleEdit} autoFocus={true} />
     );
   }
 
-  renderTitle() {
+  renderPoints() {
     return (
       this.state.hasBeenEdited ?
-      <h3 className="info-title" onDoubleClick={this.toggleEdit}>{this.state.text}</h3> :
-      <h3 className="info-title" onDoubleClick={this.toggleEdit}>{this.props.text}</h3>
+      <span className="info-points" onDoubleClick={this.toggleEdit}>{this.state.points} pts</span> :
+      <span className="info-points" onDoubleClick={this.toggleEdit}>{this.props.points} pts</span>
     );
   }
 
   render() {
     return (
-      <div id="title-box" className="info-header">
+      <div id="points-box" className="info-reward">
         {
           this.state.editing ?
-          this.renderTitleInput() :
-          this.renderTitle()
+          this.renderPointsInput() :
+          this.renderPoints()
         }
-        <PointsBox points={this.props.points} />
       </div>
     );
   }
 }
 
-export default TitleBox;
+export default PointsBox;
