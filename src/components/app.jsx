@@ -11,7 +11,8 @@ class App extends Component {
     this.state = {
       imageSrc: 'https://d1dyf6uqjwvcrk.cloudfront.net/cfs-file.ashx/__key/CommunityServer-Components-PostAttachments/00-19-63-91-59/Ember_5F00_Tile.png',
       title: 'Your mobile experience is here',
-      description: '<div style="font-size: 14px; line-height: 1.3em"><div class="ember-content" style="padding-bottom: 20px;"><p><em>Ember</em> is your digital companion. It will enable you to become the best version of yourself.</p><h3>Ember allows you to:</h3><ul><li>Prioritize what matters most to you</li><li>Pick your goals and monitor your progress</li><li>Access interesting and relevant content + videos</li><li>Participate in self-guided learning</li><li>Book your screening &amp; coaching appointments on-the-go</li></ul></div><div class="app-store-container" style="position: relative; height: 80px; padding: 0 0; margin-bottom: 0;"><div class="app-store-icon ios-download-icon" style="width: 50%; height: 100%; display: inline-block; float: left; padding-top: 16px;"><a href="" style="margin: 0 0 0 48px;"><img src="https://mywellnessnumbers.com/HumanPerformance/images/ios-download-icon.png" alt="Download ember on the iOS App Store"></a></div><div class="app-store-icon android-download-icon" style="width: 50%; height: 100%; display: inline-block; float: left; padding-top: 16px;"><a href="" style="margin: 0 48px 0 16px;"><img src="https://mywellnessnumbers.com/HumanPerformance/images/android-download-icon.png" alt="Download ember on the Google Play Store"></a></div></div></div>'
+      description: '<div style="font-size: 14px; line-height: 1.3em"><div class="ember-content" style="padding-bottom: 20px;"><p><em>Ember</em> is your digital companion. It will enable you to become the best version of yourself.</p><h3>Ember allows you to:</h3><ul><li>Prioritize what matters most to you</li><li>Pick your goals and monitor your progress</li><li>Access interesting and relevant content + videos</li><li>Participate in self-guided learning</li><li>Book your screening &amp; coaching appointments on-the-go</li></ul></div><div class="app-store-container" style="position: relative; height: 80px; padding: 0 0; margin-bottom: 0;"><div class="app-store-icon ios-download-icon" style="width: 50%; height: 100%; display: inline-block; float: left; padding-top: 16px;"><a href="" style="margin: 0 0 0 48px;"><img src="https://mywellnessnumbers.com/HumanPerformance/images/ios-download-icon.png" alt="Download ember on the iOS App Store"></a></div><div class="app-store-icon android-download-icon" style="width: 50%; height: 100%; display: inline-block; float: left; padding-top: 16px;"><a href="" style="margin: 0 48px 0 16px;"><img src="https://mywellnessnumbers.com/HumanPerformance/images/android-download-icon.png" alt="Download ember on the Google Play Store"></a></div></div></div>',
+      hasLoaded: false
     };
 
     this.getToken = this.getToken.bind(this);
@@ -34,7 +35,8 @@ class App extends Component {
         this.setState({
           imageSrc: event.MediumImageSrc,
           title: event.Title,
-          description: event.HtmlDescription
+          description: event.HtmlDescription,
+          hasLoaded: true
         });
       }
     });
@@ -69,6 +71,80 @@ class App extends Component {
     });
   }
 
+  submitData() {
+    // Forced to use the old API... ughhh.
+    /*
+    {
+      "Message": "",
+      "Data": [
+        {
+          "Id": 2350,
+          "GoalId": 2350,
+          "Title": "Welcome to Human Performance",
+          "Type": 1,
+          "Frequency": 0,
+          "TargetGoal": 0,
+          "Status": 2,
+          "Attributes": 28,
+          "TrackingMode": 0,
+          "WinStrategy": 0,
+          "TargetUrl": "",
+          "StartDate": "1/1/0001",
+          "EndDate": "12/31/9999",
+          "Reward": {
+            "Value": "0",
+            "MaxCount": 1,
+            "Type": 0
+          },
+          "SupportedDevices": [],
+          "DevicesNeedingReauth": [],
+          "CommentsCount": 0,
+          "ActiveParticipantCount": 0,
+          "Leaderboards": [],
+          "Source": 1,
+          "ShortDescription": "",
+          "HtmlDescription": "<p><strong>What is Human Performance?</strong> <br>Human Performance addresses the interconnected elements of life: <strong>Health &amp; Fitness</strong>, <strong>Money &amp; Prosperity</strong>, <strong>Growth &amp; Development</strong> and <strong>Contribution &amp; Sustainability</strong>. Improving one element makes the others stronger &ndash; for example, improving your finances can lead to better health. Maximizing Human Performance creates the foundation you need for a more fulfilling life.</p><p style=\"margin-top:10px\">Click on any one of the Human Performance elements on your home page to learn why they're important, how they impact the other areas of your life and how you can use our resources to achieve your goals.</p><img src=\"https://challenges.mywellnessnumbers.com/images/HP_AboutTheProgram.png\" alt=\"hp_abouttheprogram\" width=\"100%\" />",
+          "ExtendedProperties": {},
+          "ActivityLog": [],
+          "Progress": null,
+          "Actions": [
+            {
+              "Type": "RedirectToTarget",
+              "Details": {
+                "Text": "Close",
+                "Url": ""
+              },
+              "Text": "Close",
+              "Url": ""
+            }
+          ],
+          "FlagText": 0,
+          "StrategyText": null,
+          "PrivacyFlag": 0,
+          "IsTeamChallenge": false,
+          "TeamSizeMax": 0,
+          "TeamSizeMin": 0,
+          "IsWeightChallenge": false,
+          "ShowWeeklyCalendar": false,
+          "ShowExtendedDescription": false,
+          "LastTrackedDate": null,
+          "MediumImageSrc": "https://d1dyf6uqjwvcrk.cloudfront.net/cfs-file.ashx/__key/CommunityServer-Components-PostAttachments/00-18-07-97-79/BestLife_5F00_Tile.png",
+          "SmallImageSrc": "https://d1dyf6uqjwvcrk.cloudfront.net/cfs-file.ashx/__key/CommunityServer-Components-PostAttachments/00-18-26-11-60/thumb_5F00_BestLife_5F00_5F00_5F00_Tile.png",
+          "IsPHITargeted": false,
+          "IsDSTLeaderboardEnabled": false,
+          "IsPartnerVerifiedChallenge": false,
+          "IsPeerToPeerChallenge": false,
+          "IsLearningChallenge": false
+        }
+      ],
+      "RecordCount": 0,
+      "CreateTime": "2017-11-28T08:56:39"
+    }
+    */
+
+
+  }
+
   render() {
     return (
       <div id="app">
@@ -79,17 +155,21 @@ class App extends Component {
             <form id="form">
               <div className="form-group">
                 <label htmlFor="employerName">EmployerName</label>
-                <input type="text" className="form-control" id="employerName" placeholder="Limeadedemorb" />
+                <input type="text" className="form-control" id="employerName" placeholder="Limeadedemorb" readOnly={this.state.hasLoaded} />
               </div>
               <div className="form-group">
                 <label htmlFor="password">Password</label>
-                <input type="text" className="form-control" id="password" placeholder="CoolSkeleton95" />
+                <input type="text" className="form-control" id="password" placeholder="CoolSkeleton95" readOnly={this.state.hasLoaded} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="psk">PSK</label>
+                <input type="text" className="form-control" id="psk" placeholder="ABCD-1234-ABCD-1234" readOnly={this.state.hasLoaded} />
               </div>
               <div className="form-group">
                 <label htmlFor="eventId">Event ID</label>
-                <input type="text" className="form-control" id="eventId" placeholder="2350" />
+                <input type="text" className="form-control" id="eventId" placeholder="2350" readOnly={this.state.hasLoaded} />
               </div>
-              <button type="submit" className="btn btn-primary" onClick={this.getToken}>Submit</button>
+              <button type="submit" className="btn btn-primary" onClick={this.getToken} disabled={this.state.hasLoaded}>Fetch CIE</button>
             </form>
           </div>
 
