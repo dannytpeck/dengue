@@ -19,15 +19,12 @@ class App extends Component {
     };
 
     this.getToken = this.getToken.bind(this);
+    this.getImageUrl = this.getImageUrl.bind(this);
     this.getEventData = this.getEventData.bind(this);
   }
 
-  getEventData(eventId, token) {
-    //const url = `https://api.limeade.com/api/activity/${eventId}/Get?types=5&status=2&attributes=1&contents=32319`;
+  getEventData(eventId, headers, imageUrl) {
     const url = `https://api.limeade.com/api/admin/activity/-${eventId}`;
-    const headers = {
-      Authorization: `Bearer ${token}`
-    };
 
     $.ajax(url, {
       type: 'get',
@@ -35,9 +32,8 @@ class App extends Component {
       dataType: 'json',
       success: (data) => {
         const event = data.Data;
-
         this.setState({
-          imageSrc: `https://limeade.com/${event.ChallengeLogoURL}`,
+          imageSrc: imageUrl,
           title: event.Name,
           description: event.AboutChallenge,
           points: event.ActivityReward.Value,
@@ -45,6 +41,22 @@ class App extends Component {
           targeting: event.Targeting,
           hasLoaded: true
         });
+      }
+    });
+  }
+
+  getImageUrl(eventId, token) {
+    const url = `https://api.limeade.com/api/activity/${eventId}/Get?types=1&status=1&attributes=1&contents=15`;
+    const headers = {
+      Authorization: `Bearer ${token}`
+    };
+    $.ajax(url, {
+      type: 'get',
+      headers: headers,
+      dataType: 'json',
+      success: (data) => {
+        const imageUrl = data.Data[0].MediumImageSrc;
+        this.getEventData(eventId, headers, imageUrl);
       }
     });
   }
@@ -73,7 +85,7 @@ class App extends Component {
       data: JSON.stringify(data),
       dataType: 'json',
       success: (data) => {
-        this.getEventData(eventId, data.access_token);
+        this.getImageUrl(eventId, data.access_token);
       }
     });
   }
