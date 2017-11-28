@@ -20,7 +20,7 @@ class TitleBox extends Component {
     this.setState({ text: this.props.text });
   }
 
-  toggleEdit() {
+  toggleEdit(e) {
     this.setState({
       editing: !this.state.editing
     });
@@ -59,8 +59,8 @@ class TitleBox extends Component {
   renderTitleInput() {
     return (
       this.state.hasBeenEdited ?
-      <input type="text" className="form-control" value={this.state.text} onChange={this.saveChanges} onKeyDown={this.handleKeyDown} /> :
-      <input type="text" className="form-control" value={this.props.text} onChange={this.saveChanges} onKeyDown={this.handleKeyDown} />
+      <input type="text" className="form-control" value={this.state.text} onChange={this.saveChanges} onKeyDown={this.handleKeyDown} autoFocus={true} /> :
+      <input type="text" className="form-control" value={this.props.text} onChange={this.saveChanges} onKeyDown={this.handleKeyDown} autoFocus={true} />
     );
   }
 

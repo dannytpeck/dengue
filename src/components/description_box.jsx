@@ -39,8 +39,8 @@ class DescriptionBox extends Component {
   renderDescriptionTextarea() {
     return (
       this.state.hasBeenEdited ?
-      <textarea className="form-control" rows="6" value={this.state.text} onKeyUp={this.handleKeyUp} onChange={this.handleKeyUp}></textarea> :
-      <textarea className="form-control" rows="6" value={this.props.text} onKeyUp={this.handleKeyUp} onChange={this.handleKeyUp}></textarea>
+      <textarea className="form-control" rows="6" value={this.state.text} onKeyUp={this.handleKeyUp} onChange={this.handleKeyUp} autoFocus={true}></textarea> :
+      <textarea className="form-control" rows="6" value={this.props.text} onKeyUp={this.handleKeyUp} onChange={this.handleKeyUp} autoFocus={true}></textarea>
     );
   }
 
