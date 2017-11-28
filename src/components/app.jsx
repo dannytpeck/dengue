@@ -40,6 +40,9 @@ class App extends Component {
           imageSrc: `https://limeade.com/${event.ChallengeLogoURL}`,
           title: event.Name,
           description: event.AboutChallenge,
+          points: event.ActivityReward.Value,
+          displayPriority: event.DisplayPriority,
+          targeting: event.Targeting,
           hasLoaded: true
         });
       }
