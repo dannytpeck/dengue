@@ -9,6 +9,7 @@ class App extends Component {
     super(props);
 
     this.state = {
+      clients: [],
       hasLoaded: false,
       imageSrc: 'https://mywellmetrics.com/cfs-file.ashx/__key/CommunityServer-Components-PostAttachments/00-19-63-91-59/Ember_5F00_Tile.png',
       title: 'Your mobile experience is here',
@@ -23,6 +24,26 @@ class App extends Component {
     this.getInitialData = this.getInitialData.bind(this);
     this.getEventData = this.getEventData.bind(this);
     this.submitData = this.submitData.bind(this);
+    this.fetchPsk = this.fetchPsk.bind(this);
+  }
+
+  componentDidMount() {
+    $.getJSON('https://api.airtable.com/v0/appN1J6yscNwlzbzq/Clients?api_key=keyCxnlep0bgotSrX&view=sorted').done(data => {
+      let records = data.records;
+
+      if (data.offset) {
+        $.getJSON(`https://api.airtable.com/v0/appN1J6yscNwlzbzq/Clients?api_key=keyCxnlep0bgotSrX&view=sorted&offset=${data.offset}`).done(data => {
+          this.setState({
+            clients: [...records, ...data.records]
+          });
+        });
+      } else {
+        this.setState({
+          clients: records
+        });
+      }
+
+    });
   }
 
   getToken(e) {
@@ -230,6 +251,20 @@ class App extends Component {
 
   }
 
+  fetchPsk(e) {
+    this.state.clients.forEach((client) => {
+      if (client.fields['Limeade e='] === e.target.value) {
+        $('#psk').val(client.fields['Limeade PSK']);
+      }
+    });
+  }
+
+  renderEmployerNames() {
+    return this.state.clients.map((client) => {
+      return <option key={client.id}>{client.fields['Limeade e=']}</option>;
+    });
+  }
+
   render() {
     return (
       <div id="app">
@@ -241,7 +276,10 @@ class App extends Component {
             <form id="form">
               <div className="form-group">
                 <label htmlFor="employerName">EmployerName</label>
-                <input type="text" className="form-control" id="employerName" placeholder="Limeadedemorb" readOnly={this.state.hasLoaded} />
+                <select id="employerName" className="form-control custom-select" onChange={this.fetchPsk}>
+                  <option defaultValue>Select Employer</option>
+                  {this.renderEmployerNames()}
+                </select>
               </div>
               <div className="form-group">
                 <label htmlFor="password">Password</label>
