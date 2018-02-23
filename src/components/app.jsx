@@ -13,7 +13,7 @@ class App extends Component {
       hasLoaded: false,
       imageSrc: 'https://images.template.net/wp-content/uploads/2016/04/Shrug-Emoticon-Japanese-Kaomoji-Download1.jpg',
       title: 'Your CIE will appear here',
-      description: '<div style="font-size: 14px; line-height: 1.3em"><div><p>Here you can write some additional details about how to complete the challenge. You could also add some tips for people at different skill levels for the activity.</p></div><p style="font-size: 9px;"><span>© Copyright 2017 </span><a href="http://www.adurolife.com" target="_blank" style="text-decoration: none;">ADURO, INC.</a><span> All rights reserved.</span></p></div>',
+      description: '<div style="font-size: 14px; line-height: 1.3em"><div><p>Here you can write some additional details about how to complete the challenge. You could also add some tips for people at different skill levels for the activity.</p></div><p style="font-size: 9px;"><span>&copy; Copyright 3030 </span><a href="http://www.adurolife.com" target="_blank" style="text-decoration: none;">ADURO, INC.</a><span> All rights reserved.</span></p></div>',
       points: '100',
       maxOccurrences: '',
       displayPriority: '',
