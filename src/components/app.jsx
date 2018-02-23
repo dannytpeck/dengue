@@ -104,12 +104,32 @@ class App extends Component {
       dataType: 'json',
       success: (data) => {
         const event = data.Data;
+
+        console.log(event);
+
+        let targeting, targetingText = 'None';
+        if (event.Targeting.length > 0) {
+          targeting = event.Targeting[0];
+        }
+
+        if (targeting) {
+          targetingText = '';
+          if (targeting.SubgroupId < 0) {
+            const targetingTags = targeting.Tags;
+            targetingTags.map(tag => {
+              targetingText += tag.TagName + ': ' + tag.TagValues + ' ';
+            });
+          } else {
+            targetingText += 'SubgroupId: ' + targeting.SubgroupId;
+          }
+        }
+
         this.setState({
           title: event.Name,
           description: event.AboutChallenge,
           points: event.ActivityReward.Value,
           displayPriority: event.DisplayPriority,
-          targeting: event.Targeting,
+          targeting: targetingText,
           imageSrc: imageUrl,
           maxOccurrences: maxOccurrences,
           hasLoaded: true
@@ -314,7 +334,7 @@ class App extends Component {
             </div>
             <div className="form-group" id="targetingContainer">
               <label htmlFor="targeting">Targeting</label>
-              <input type="text" className="form-control" id="targeting" value={this.state.targeting} />
+              <input type="text" className="form-control" id="targeting" value={this.state.targeting} readOnly />
             </div>
 
           </div>
