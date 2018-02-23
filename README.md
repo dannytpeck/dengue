@@ -8,7 +8,7 @@ Clone this repo, install dependencies, then start developing with webpack/browse
 
 ```
 	> git clone https://github.com/dannytpeck/dengue.git
-	> cd project-dengue
+	> cd dengue
 	> npm install
 	> npm start
 ```
