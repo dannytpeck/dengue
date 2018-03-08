@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ImageBox from './image_box';
 import TitleBox from './title_box';
 import DescriptionBox from './description_box';
 
@@ -11,7 +12,7 @@ class TilePreview extends Component {
     return (
       <div id="tile-preview">
         <div className="stretchy-wrapper">
-          <img className="item-info-image" src={this.props.imageSrc} />
+          <ImageBox imageSrc={this.props.imageSrc} />
         </div>
         <div id="more-info-container">
 
