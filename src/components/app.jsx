@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from './header';
 import TilePreview from './tile_preview';
+import UploadModal from './upload_modal';
 
 /* global $ */
 
@@ -263,7 +264,12 @@ class App extends Component {
         type: 'IncentiveEvents'
       };
 
+      // Open Modal
+      $('#uploadModal').modal('show');
+      $('#uploadModalBody').html('<p>Uploading...</p>');
+
       $.post(url, params).done(function(response) {
+        $('#uploadModalBody').append(`<p>${response}</p>`);
         console.log(response);
       });
 
@@ -321,6 +327,7 @@ class App extends Component {
               </div>
               <div className="form-group">
                 <button type="submit" className="btn btn-primary" onClick={this.submitData}>Upload Changes</button>
+                <UploadModal />
               </div>
             </form>
 
