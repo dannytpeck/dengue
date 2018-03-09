@@ -56,7 +56,7 @@ class DescriptionBox extends Component {
       <div id="description-box" className="item-info-details" onDoubleClick={this.toggleEdit} onBlur={this.toggleEdit}>
         {
           this.state.editing ?
-          <TrumbowygBox text={this.state.text} /> :
+          <TrumbowygBox name="description" title="" text={this.state.text} /> :
           <div className="description-text" dangerouslySetInnerHTML={this.createHtml()}></div>
         }
       </div>
