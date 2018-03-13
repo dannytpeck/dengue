@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ImageBox from './image_box';
 import TitleBox from './title_box';
-import DescriptionBox from './description_box';
+import TrumbowygBox from './trumbowyg_box';
 
 class TilePreview extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class TilePreview extends Component {
         <div id="more-info-container">
 
           <TitleBox text={this.props.title} points={this.props.points} />
-          <DescriptionBox text={this.props.description} />
+          <TrumbowygBox text={this.props.description} />
 
           <div className="item-info-actions">
             <button className="button button-primary">Close</button>
