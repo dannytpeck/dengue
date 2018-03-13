@@ -27,6 +27,7 @@ class App extends Component {
     this.submitData = this.submitData.bind(this);
     this.fetchPsk = this.fetchPsk.bind(this);
     this.setImage = this.setImage.bind(this);
+    this.setTitle = this.setTitle.bind(this);
   }
 
   componentDidMount() {
@@ -292,6 +293,12 @@ class App extends Component {
     });
   }
 
+  setTitle(title) {
+    this.setState({
+      title: title
+    });
+  }
+
   renderEmployerNames() {
     return this.state.clients.map((client) => {
       return <option key={client.id}>{client.fields['Limeade e=']}</option>;
@@ -360,6 +367,7 @@ class App extends Component {
               description={this.state.description}
               points={this.state.points}
               setImage={this.setImage}
+              setTitle={this.setTitle}
             />
           </div>
 

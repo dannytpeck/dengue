@@ -7,18 +7,11 @@ class TitleBox extends Component {
 
     this.state = {
       text: '',
-      editing: false,
-      hasBeenEdited: false
+      editing: false
     };
 
     this.toggleEdit = this.toggleEdit.bind(this);
-    this.revertChanges = this.revertChanges.bind(this);
-    this.saveChanges = this.saveChanges.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-  }
-
-  ComponentDidMount() {
-    this.setState({ text: this.props.text });
+    this.updateTitle = this.updateTitle.bind(this);
   }
 
   toggleEdit(e) {
@@ -27,50 +20,21 @@ class TitleBox extends Component {
     });
   }
 
-  revertChanges() {
-    this.setState({
-      hasBeenEdited: false,
-      text: this.props.title
-    });
-  }
-
-  saveChanges(event) {
-    this.setState({
-      hasBeenEdited: true,
-      text: event.target.value
-    });
-  }
-
-  handleKeyDown(event) {
+  updateTitle(event) {
     const ESCAPE_KEY = 27;
     const ENTER_KEY = 13;
 
     switch (event.which) {
       case ESCAPE_KEY:
-        this.revertChanges();
         this.toggleEdit();
         break;
       case ENTER_KEY:
-        this.saveChanges(event);
         this.toggleEdit();
         break;
+      default:
+        this.props.setTitle(event.target.value);
+        break;
     }
-  }
-
-  renderTitleInput() {
-    return (
-      this.state.hasBeenEdited ?
-      <input type="text" className="form-control info-title" value={this.state.text} onChange={this.saveChanges} onKeyDown={this.handleKeyDown} onBlur={this.toggleEdit} autoFocus={true} /> :
-      <input type="text" className="form-control info-title" value={this.props.text} onChange={this.saveChanges} onKeyDown={this.handleKeyDown} onBlur={this.toggleEdit} autoFocus={true} />
-    );
-  }
-
-  renderTitle() {
-    return (
-      this.state.hasBeenEdited ?
-      <h3 className="info-title" onDoubleClick={this.toggleEdit}>{this.state.text}</h3> :
-      <h3 className="info-title" onDoubleClick={this.toggleEdit}>{this.props.text}</h3>
-    );
   }
 
   render() {
@@ -78,8 +42,8 @@ class TitleBox extends Component {
       <div id="title-box" className="info-header">
         {
           this.state.editing ?
-          this.renderTitleInput() :
-          this.renderTitle()
+          <input type="text" className="form-control info-title" value={this.props.text} onKeyUp={this.updateTitle} onChange={this.updateTitle} onBlur={this.toggleEdit} autoFocus={true} /> :
+          <h3 className="info-title" onDoubleClick={this.toggleEdit}>{this.props.text}</h3>
         }
         <PointsBox points={this.props.points} />
       </div>
