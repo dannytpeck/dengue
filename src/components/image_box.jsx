@@ -20,10 +20,18 @@ class ImageBox extends Component {
 
   updateImageSrc(event) {
     const ESCAPE_KEY = 27;
-    if (event.which === ESCAPE_KEY) {
-      this.toggleEdit();
-    } else {
-      this.props.setImage(event.target.value);
+    const ENTER_KEY = 13;
+
+    switch (event.which) {
+      case ESCAPE_KEY:
+        this.toggleEdit();
+        break;
+      case ENTER_KEY:
+        this.toggleEdit();
+        break;
+      default:
+        this.props.setImage(event.target.value);
+        break;
     }
   }
 
@@ -42,7 +50,7 @@ class ImageBox extends Component {
       <div id="image-box" className="stretchy-wrapper" onDoubleClick={this.toggleEdit} onBlur={this.toggleEdit}>
         {
           this.state.editing ?
-          <textarea className="form-control" rows="9" value={this.props.imageSrc} onKeyUp={this.updateImageSrc} onChange={this.updateImageSrc} autoFocus={true}></textarea> :
+          <textarea className="form-control" rows="9" value={this.props.imageSrc} onKeyDown={this.updateImageSrc} onChange={this.updateImageSrc} autoFocus={true}></textarea> :
           <img className="item-info-image" src={this.createUrl()}/>
         }
       </div>
