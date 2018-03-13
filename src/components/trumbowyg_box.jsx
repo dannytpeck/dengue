@@ -16,7 +16,7 @@ class TrumbowygBox extends Component {
 	render() {
 		return (
 			<div className="trumbowyg-box">
-				<div class="description-text" dangerouslySetInnerHTML={{ __html: this.props.text }}></div>
+				<div className="description-text" dangerouslySetInnerHTML={{ __html: this.props.text }}></div>
 			</div>
 		);
 	}
