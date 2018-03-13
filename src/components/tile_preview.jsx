@@ -12,7 +12,7 @@ class TilePreview extends Component {
     return (
       <div id="tile-preview">
         <div className="stretchy-wrapper">
-          <ImageBox imageSrc={this.props.imageSrc} />
+          <ImageBox imageSrc={this.props.imageSrc} setImage={this.props.setImage} />
         </div>
         <div id="more-info-container">
 

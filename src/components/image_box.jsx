@@ -5,18 +5,12 @@ class ImageBox extends Component {
     super(props);
 
     this.state = {
-      imageSrc: null,
-      editing: false,
-      hasBeenEdited: false
+      editing: false
     };
 
     this.toggleEdit = this.toggleEdit.bind(this);
-    this.handleKeyUp = this.handleKeyUp.bind(this);
+    this.updateImageSrc = this.updateImageSrc.bind(this);
   }
-
-  // ComponentDidMount() {
-  //   this.setState({ imageSrc: this.props.imageSrc });
-  // }
 
   toggleEdit() {
     this.setState({
@@ -24,35 +18,23 @@ class ImageBox extends Component {
     });
   }
 
-  handleKeyUp(event) {
+  updateImageSrc(event) {
     const ESCAPE_KEY = 27;
     if (event.which === ESCAPE_KEY) {
       this.toggleEdit();
     } else {
-      this.setState({
-        hasBeenEdited: true,
-        imageSrc: event.target.value
-      });
+      this.props.setImage(event.target.value);
     }
-  }
-
-  renderUrlTextarea() {
-    return (
-      this.state.hasBeenEdited ?
-      <textarea className="form-control" rows="9" value={this.state.imageSrc} onKeyUp={this.handleKeyUp} onChange={this.handleKeyUp} autoFocus={true}></textarea> :
-      <textarea className="form-control" rows="9" value={this.props.imageSrc} onKeyUp={this.handleKeyUp} onChange={this.handleKeyUp} autoFocus={true}></textarea>
-    );
   }
 
   createUrl() {
-    const originalUrl = this.props.imageSrc;
-    let updatedUrl = this.state.imageSrc;
+    let url = this.props.imageSrc;
 
-    if (updatedUrl && !updatedUrl.includes('http')) {
-      updatedUrl = 'https://mywellmetrics.com' + updatedUrl;
+    if (!url.includes('http')) {
+      url = 'https://mywellmetrics.com' + url;
     }
 
-    return this.state.hasBeenEdited ? updatedUrl : originalUrl;
+    return url;
   }
 
   render() {
@@ -60,7 +42,7 @@ class ImageBox extends Component {
       <div id="image-box" className="stretchy-wrapper" onDoubleClick={this.toggleEdit} onBlur={this.toggleEdit}>
         {
           this.state.editing ?
-          this.renderUrlTextarea() :
+          <textarea className="form-control" rows="9" value={this.props.imageSrc} onKeyUp={this.updateImageSrc} onChange={this.updateImageSrc} autoFocus={true}></textarea> :
           <img className="item-info-image" src={this.createUrl()}/>
         }
       </div>

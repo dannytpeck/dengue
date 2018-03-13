@@ -26,6 +26,7 @@ class App extends Component {
     this.getEventData = this.getEventData.bind(this);
     this.submitData = this.submitData.bind(this);
     this.fetchPsk = this.fetchPsk.bind(this);
+    this.setImage = this.setImage.bind(this);
   }
 
   componentDidMount() {
@@ -285,6 +286,12 @@ class App extends Component {
     });
   }
 
+  setImage(src) {
+    this.setState({
+      imageSrc: src
+    });
+  }
+
   renderEmployerNames() {
     return this.state.clients.map((client) => {
       return <option key={client.id}>{client.fields['Limeade e=']}</option>;
@@ -347,7 +354,13 @@ class App extends Component {
           </div>
 
           <div className="col-5 offset-1">
-            <TilePreview imageSrc={this.state.imageSrc} title={this.state.title} description={this.state.description} points={this.state.points} />
+            <TilePreview
+              imageSrc={this.state.imageSrc}
+              title={this.state.title}
+              description={this.state.description}
+              points={this.state.points}
+              setImage={this.setImage}
+            />
           </div>
 
         </div>
