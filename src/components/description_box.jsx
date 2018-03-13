@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import TrumbowygBox from './trumbowyg_box';
 
 class DescriptionBox extends Component {
   constructor(props) {
@@ -55,7 +56,7 @@ class DescriptionBox extends Component {
       <div id="description-box" className="item-info-details" onDoubleClick={this.toggleEdit} onBlur={this.toggleEdit}>
         {
           this.state.editing ?
-          this.renderDescriptionTextarea() :
+          <TrumbowygBox name="description" title="" text={this.state.text} /> :
           <div className="description-text" dangerouslySetInnerHTML={this.createHtml()}></div>
         }
       </div>
