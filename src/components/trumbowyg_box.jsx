@@ -8,7 +8,22 @@ class TrumbowygBox extends Component {
 
 	componentDidMount() {
     /* global $ */
-		$('.description-text').trumbowyg().on('tbwpaste', (event) => {
+		$('.description-text').trumbowyg(
+			{ btns: 
+				[
+				['viewHTML'],
+        ['undo', 'redo'], // Only supported in Blink browsers
+        ['formatting'],
+        ['strong', 'em', 'del'],
+        ['superscript', 'subscript'],
+        ['link'],
+        ['foreColor', 'backColor'],
+        ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+        ['unorderedList', 'orderedList'],
+        ['horizontalRule'],
+        ['removeformat']
+				] }
+			).on('tbwpaste', (event) => {
       event.target.innerHTML = cleanPastedHTML(event.target.innerHTML);
     });
 	}

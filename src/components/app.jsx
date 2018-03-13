@@ -202,7 +202,7 @@ class App extends Component {
       ]];
 
       const eventName = $('.info-title').html();
-      const htmlDescription = $('#description-text').html();
+      const htmlDescription = $('.description-text').html();
       const employerName = $('#employerName').val();
       const eventId = $('#eventId').val();
       const pointsAwarded = $('.info-points span').html();
