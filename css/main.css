@@ -91,6 +91,7 @@ p {
   cursor: pointer;
 }
 
-.trumbowyg-box {
+.trumbowyg-box, .trumbowyg-editor {
   margin: 0;
+  border: 0;
 }
