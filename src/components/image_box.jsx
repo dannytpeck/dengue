@@ -39,8 +39,8 @@ class ImageBox extends Component {
   renderUrlTextarea() {
     return (
       this.state.hasBeenEdited ?
-      <textarea className="form-control" rows="6" value={this.state.imageSrc} onKeyUp={this.handleKeyUp} onChange={this.handleKeyUp} autoFocus={true}></textarea> :
-      <textarea className="form-control" rows="6" value={this.props.imageSrc} onKeyUp={this.handleKeyUp} onChange={this.handleKeyUp} autoFocus={true}></textarea>
+      <textarea className="form-control" rows="9" value={this.state.imageSrc} onKeyUp={this.handleKeyUp} onChange={this.handleKeyUp} autoFocus={true}></textarea> :
+      <textarea className="form-control" rows="9" value={this.props.imageSrc} onKeyUp={this.handleKeyUp} onChange={this.handleKeyUp} autoFocus={true}></textarea>
     );
   }
 
