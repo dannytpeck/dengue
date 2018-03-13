@@ -302,7 +302,7 @@ class App extends Component {
             <form id="form">
               <div className="form-group">
                 <label htmlFor="employerName">EmployerName</label>
-                <select id="employerName" className="form-control custom-select" onChange={this.fetchPsk}>
+                <select id="employerName" className="form-control custom-select" onChange={this.fetchPsk} disabled={this.state.hasLoaded}>
                   <option defaultValue>Select Employer</option>
                   {this.renderEmployerNames()}
                 </select>
