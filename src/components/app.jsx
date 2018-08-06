@@ -255,7 +255,7 @@ class App extends Component {
     // Upload CSV to Limeade
     function uploadToLimeade(csv) {
       const headers = csv[0].join(',');
-      const url = 'http://mywellnessnumbers.sftp.adurolife.com/limeade-upload/';
+      const url = 'https://calendarbuilder.dev.adurolife.com/limeade-upload/';
 
       const oneIncentiveEvent = csv[1].join(',');
 
