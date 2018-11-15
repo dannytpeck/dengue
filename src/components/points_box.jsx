@@ -67,8 +67,8 @@ class PointsBox extends Component {
   renderPoints() {
     return (
       this.state.hasBeenEdited ?
-      <span className="info-points" onDoubleClick={this.toggleEdit}>{this.state.points} pts</span> :
-      <span className="info-points" onDoubleClick={this.toggleEdit}>{this.props.points} pts</span>
+      <span className="info-points" onDoubleClick={this.toggleEdit}><span>{this.state.points}</span> pts</span> :
+      <span className="info-points" onDoubleClick={this.toggleEdit}><span>{this.props.points}</span> pts</span>
     );
   }
 
