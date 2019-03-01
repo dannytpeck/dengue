@@ -53,16 +53,17 @@ class App extends Component {
     e.preventDefault();
 
     const headers = {
-      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlNTZ2w4Zzg1ZDNELUlVaFY3dXB5bkQzMEVYTSIsImtpZCI6IlNTZ2w4Zzg1ZDNELUlVaFY3dXB5bkQzMEVYTSJ9.eyJjbGllbnRfaWQiOiJpbnRlcm5hbGNsaWVudCIsInNjb3BlIjpbImFwaWFjY2VzcyIsIm9wZW5pZCIsInBpaWlkZW50aXR5Il0sInN1YiI6IjM3NzY0NzEiLCJhbXIiOiJwYXNzd29yZCIsImF1dGhfdGltZSI6MTU0MDg0NTEzNywiaWRwIjoiaWRzcnYiLCJuYW1lIjoib21lbGV0dGUiLCJlbXBsb3llcmlkIjoiMTAwODQ1Iiwicm9sZSI6IlVzZXIiLCJlbXBsb3llcm5hbWUiOiJXZWxsbWV0cmljc0RlbW8iLCJnaXZlbl9uYW1lIjoiSm9zZXBoIiwiZmFtaWx5X25hbWUiOiJQYWsiLCJlbWFpbCI6Impvc2VwaC5wYWtAYWR1cm9saWZlLmNvbSIsImlzcyI6Ind3dy5saW1lYWRlLmNvbSIsImF1ZCI6Ind3dy5saW1lYWRlLmNvbS9yZXNvdXJjZXMiLCJleHAiOjE1NzIzODExMzcsIm5iZiI6MTU0MDg0NTEzN30.N5ikvfHeIe-SygysKkE4FfEZj7t9Qi8yIUJs3NdToMpwZzQktYn3tBpyEiMUVj4VMFtfKiQ-BPkferFmLTAE2tQhhkKjAxhWAQ_3bgCmpQl5CY3siBRoPapD5OFOlTLiWoDCOaRqNT17I6Rqd1ZCjjeso_WTW8nJe1uaDXVymWGzYA0tEeK9k-9_q5d-zRFfEs13Yybq6pra2uKMZvUtBe1EML0EvMKaMzgr-9mRDc3H8iAVgPzucgoaoFN3EWbcNKHlRhNh0hsa_ZzdxoEIvNh85YqJv2ISY1TbwfG_Lo50HtlFXbPDoWRNGudgxWMIn-24W4Ve4y4kZaJkOZRwaw',
+      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlNTZ2w4Zzg1ZDNELUlVaFY3dXB5bkQzMEVYTSIsImtpZCI6IlNTZ2w4Zzg1ZDNELUlVaFY3dXB5bkQzMEVYTSJ9.eyJjbGllbnRfaWQiOiJpbnRlcm5hbGNsaWVudCIsInNjb3BlIjpbImFwaWFjY2VzcyIsIm9wZW5pZCIsInBpaWlkZW50aXR5Il0sInN1YiI6IjIyNTAxNDciLCJhbXIiOiJwYXNzd29yZCIsImF1dGhfdGltZSI6MTU1MTQ3Mzk3NywiaWRwIjoiaWRzcnYiLCJuYW1lIjoiRGFubnlQZWNrIiwibGltZWFkZV9hY2NvdW50X2lkIjoiMjI1MDE0NyIsImVtcGxveWVyaWQiOiIxMDA4NDUiLCJyb2xlIjoiVXNlciIsImVtcGxveWVybmFtZSI6IldlbGxtZXRyaWNzRGVtbyIsImdpdmVuX25hbWUiOiJEYW5pZWwiLCJmYW1pbHlfbmFtZSI6IlBlY2siLCJlbWFpbCI6ImRhbm55LnBlY2tAYWR1cm9saWZlLmNvbSIsImlzcyI6Ind3dy5saW1lYWRlLmNvbSIsImF1ZCI6Ind3dy5saW1lYWRlLmNvbS9yZXNvdXJjZXMiLCJleHAiOjE1ODMwMDk5NzcsIm5iZiI6MTU1MTQ3Mzk3N30.Dk1_F2kKrTZ5JI-byd6FEA9T2pLgWPtn_l04tgCY7WiEnDkT15s5JG1nBRb7Yi4P4Tahx87IJdkH-H3zWICYMhrnIHubJuHYyWSn1_v13xlJSEsYF2og11KkNFGnuV7Ug1MYOdgn2o5tRmKXPIVO8-C0EwgroXZgs4t0sODdvutgoybenrzkN5rph-7y6H9RxI3U8BI1zSFZdsJpUV7ZVIZekXZJ5IEfkDDC0iwUdLzHCz1aX3PEekwSkj5BveCsoqCRNsS9efEzsHtpvMcz4RmKYKdwnt3sI5vp23VCcJCEItZFjrQrDb9peiSv_Tt-WlDslnYTT0wvaTQUwXcJUA',
       'Content-Type': 'application/json'
     };
 
     const employerName = $('#employerName').val();
+    const clientAdmin = $('#clientAdmin').val();
     const password = $('#password').val();
     const eventId = $('#eventId').val();
 
     const data = {
-      Username: employerName,
+      Username: clientAdmin,
       Password: password
     };
 
@@ -320,6 +321,10 @@ class App extends Component {
                   <option defaultValue>Select Employer</option>
                   {this.renderEmployerNames()}
                 </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="clientAdmin">Client Admin</label>
+                <input type="text" className="form-control" id="clientAdmin" placeholder="LimeadedemorbAdmin" readOnly={this.state.hasLoaded} />
               </div>
               <div className="form-group">
                 <label htmlFor="password">Password</label>
