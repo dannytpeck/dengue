@@ -20,7 +20,7 @@ class TilePreview extends Component {
           <TrumbowygBox text={this.props.description} />
 
           <div className="item-info-actions">
-            <button className="button button-primary">Close</button>
+            <button className="button button-primary">CLOSE</button>
           </div>
         </div>
       </div>

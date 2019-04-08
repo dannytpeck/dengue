@@ -11,8 +11,9 @@ class App extends Component {
 
     this.state = {
       clients: [],
+      selectedClient: null,
       hasLoaded: false,
-      imageSrc: 'https://d1dyf6uqjwvcrk.cloudfront.net/cfs-file.ashx/__key/CommunityServer-Components-PostAttachments/00-20-57-62-92/shrug.png',
+      imageSrc: 'https://mywellmetrics.com/cfs-file.ashx/__key/CommunityServer-Components-PostAttachments/00-20-57-62-92/shrug.png',
       title: 'Your CIE will appear here',
       description: '<div style="font-size: 14px; line-height: 1.3em"><div><p>Here you can write some additional details about how to complete the challenge. You could also add some tips for people at different skill levels for the activity.</p></div><p style="font-size: 9px;"><span>&copy; Copyright 3030 </span><a href="http://www.adurolife.com" target="_blank" style="text-decoration: none;">ADURO, INC.</a><span> All rights reserved.</span></p></div>',
       points: '100',
@@ -21,11 +22,8 @@ class App extends Component {
       targeting: ''
     };
 
-    this.getToken = this.getToken.bind(this);
-    this.getInitialData = this.getInitialData.bind(this);
     this.getEventData = this.getEventData.bind(this);
     this.submitData = this.submitData.bind(this);
-    this.fetchPsk = this.fetchPsk.bind(this);
     this.setImage = this.setImage.bind(this);
     this.setTitle = this.setTitle.bind(this);
   }
@@ -49,41 +47,15 @@ class App extends Component {
     });
   }
 
-  getToken(e) {
+  getInitialData(e) {
     e.preventDefault();
 
-    const headers = {
-      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlNTZ2w4Zzg1ZDNELUlVaFY3dXB5bkQzMEVYTSIsImtpZCI6IlNTZ2w4Zzg1ZDNELUlVaFY3dXB5bkQzMEVYTSJ9.eyJjbGllbnRfaWQiOiJpbnRlcm5hbGNsaWVudCIsInNjb3BlIjpbImFwaWFjY2VzcyIsIm9wZW5pZCIsInBpaWlkZW50aXR5Il0sInN1YiI6IjIyNTAxNDciLCJhbXIiOiJwYXNzd29yZCIsImF1dGhfdGltZSI6MTU1MTQ3Mzk3NywiaWRwIjoiaWRzcnYiLCJuYW1lIjoiRGFubnlQZWNrIiwibGltZWFkZV9hY2NvdW50X2lkIjoiMjI1MDE0NyIsImVtcGxveWVyaWQiOiIxMDA4NDUiLCJyb2xlIjoiVXNlciIsImVtcGxveWVybmFtZSI6IldlbGxtZXRyaWNzRGVtbyIsImdpdmVuX25hbWUiOiJEYW5pZWwiLCJmYW1pbHlfbmFtZSI6IlBlY2siLCJlbWFpbCI6ImRhbm55LnBlY2tAYWR1cm9saWZlLmNvbSIsImlzcyI6Ind3dy5saW1lYWRlLmNvbSIsImF1ZCI6Ind3dy5saW1lYWRlLmNvbS9yZXNvdXJjZXMiLCJleHAiOjE1ODMwMDk5NzcsIm5iZiI6MTU1MTQ3Mzk3N30.Dk1_F2kKrTZ5JI-byd6FEA9T2pLgWPtn_l04tgCY7WiEnDkT15s5JG1nBRb7Yi4P4Tahx87IJdkH-H3zWICYMhrnIHubJuHYyWSn1_v13xlJSEsYF2og11KkNFGnuV7Ug1MYOdgn2o5tRmKXPIVO8-C0EwgroXZgs4t0sODdvutgoybenrzkN5rph-7y6H9RxI3U8BI1zSFZdsJpUV7ZVIZekXZJ5IEfkDDC0iwUdLzHCz1aX3PEekwSkj5BveCsoqCRNsS9efEzsHtpvMcz4RmKYKdwnt3sI5vp23VCcJCEItZFjrQrDb9peiSv_Tt-WlDslnYTT0wvaTQUwXcJUA',
-      'Content-Type': 'application/json'
-    };
-
-    const employerName = $('#employerName').val();
-    const clientAdmin = $('#clientAdmin').val();
-    const password = $('#password').val();
     const eventId = $('#eventId').val();
 
-    const data = {
-      Username: clientAdmin,
-      Password: password
-    };
-
-    $.ajax({
-      url: 'https://api.limeade.com/api/usertoken',
-      type: 'post',
-      headers: headers,
-      data: JSON.stringify(data),
-      dataType: 'json',
-      success: (data) => {
-        this.getInitialData(eventId, data.access_token);
-      }
-    });
-  }
-
-  getInitialData(eventId, token) {
-    // Literally just used to get MaxOccurrences and EventImageUrl
+    // Literally just used to get MaxOccurrences
     const url = `https://api.limeade.com/api/activity/${eventId}/Get?types=1&status=1&attributes=1&contents=31`;
     const headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${this.state.selectedClient.fields['LimeadeAccessToken']}`
     };
     $.ajax(url, {
       type: 'get',
@@ -91,14 +63,15 @@ class App extends Component {
       dataType: 'json',
       success: (data) => {
         const event = data.Data[0];
-        const imageUrl = event.MediumImageSrc;
+        console.log(event);
         const maxOccurrences = event.Reward.MaxCount;
-        this.getEventData(eventId, headers, imageUrl, maxOccurrences);
+
+        this.getEventData(eventId, headers, maxOccurrences);
       }
     });
   }
 
-  getEventData(eventId, headers, imageUrl, maxOccurrences) {
+  getEventData(eventId, headers, maxOccurrences) {
     // Gets all other data
     const url = `https://api.limeade.com/api/admin/activity/-${eventId}`;
 
@@ -134,7 +107,7 @@ class App extends Component {
           points: event.ActivityReward.Value,
           displayPriority: event.DisplayPriority,
           targeting: targetingText,
-          imageSrc: imageUrl,
+          imageSrc: 'https://mywellmetrics.com' + event.ChallengeLogoURL,
           maxOccurrences: maxOccurrences,
           hasLoaded: true
         });
@@ -144,6 +117,8 @@ class App extends Component {
 
   submitData(e) {
     e.preventDefault();
+
+    const psk = this.state.selectedClient.fields['Limeade PSK'];
 
     // Forced to use the old API... ughhh.
     const csv = createCSV();
@@ -262,7 +237,7 @@ class App extends Component {
 
       const params = {
         e: $('#employerName').val(),
-        psk: $('#psk').val(),
+        psk: psk,
         data: headers + '\n' + oneIncentiveEvent,
         type: 'IncentiveEvents'
       };
@@ -280,14 +255,6 @@ class App extends Component {
 
   }
 
-  fetchPsk(e) {
-    this.state.clients.forEach((client) => {
-      if (client.fields['Limeade e='] === e.target.value) {
-        $('#psk').val(client.fields['Limeade PSK']);
-      }
-    });
-  }
-
   setImage(src) {
     this.setState({
       imageSrc: src
@@ -297,6 +264,14 @@ class App extends Component {
   setTitle(title) {
     this.setState({
       title: title
+    });
+  }
+
+  selectClient(e) {
+    this.state.clients.forEach((client) => {
+      if (client.fields['Limeade e='] === e.target.value) {
+        this.setState({ selectedClient: client });
+      }
     });
   }
 
@@ -317,47 +292,34 @@ class App extends Component {
             <form id="form">
               <div className="form-group">
                 <label htmlFor="employerName">EmployerName</label>
-                <select id="employerName" className="form-control custom-select" onChange={this.fetchPsk} disabled={this.state.hasLoaded}>
+                <select id="employerName" className="form-control custom-select" onChange={(e) => this.selectClient(e)} disabled={this.state.hasLoaded}>
                   <option defaultValue>Select Employer</option>
                   {this.renderEmployerNames()}
                 </select>
-              </div>
-              <div className="form-group">
-                <label htmlFor="clientAdmin">Client Admin</label>
-                <input type="text" className="form-control" id="clientAdmin" placeholder="LimeadedemorbAdmin" readOnly={this.state.hasLoaded} />
-              </div>
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input type="text" className="form-control" id="password" placeholder="CoolSkeleton95" readOnly={this.state.hasLoaded} />
               </div>
               <div className="form-group">
                 <label htmlFor="eventId">Event ID</label>
                 <input type="text" className="form-control" id="eventId" placeholder="2350" readOnly={this.state.hasLoaded} />
               </div>
               <div className="form-group">
-                <button type="submit" className="btn btn-primary" onClick={this.getToken} disabled={this.state.hasLoaded}>Fetch CIE</button>
+                <button type="submit" className="btn btn-primary" onClick={(e) => this.getInitialData(e)} disabled={this.state.hasLoaded}>Fetch CIE</button>
               </div>
             </form>
 
             <form id="form">
               <div className="form-group">
-                <label htmlFor="psk">PSK</label>
-                <input type="text" className="form-control" id="psk" placeholder="ABCD-1234-ABCD-1234" />
+                <label htmlFor="maxOccurrences">Max Occurrences</label>
+                <input type="text" className="form-control" id="maxOccurrences" value={this.state.maxOccurrences} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="displayPriority">Display Priority</label>
+                <input type="text" className="form-control" id="displayPriority" value={this.state.displayPriority} />
               </div>
               <div className="form-group">
                 <button type="submit" className="btn btn-primary" onClick={this.submitData}>Upload Changes</button>
-                <UploadModal />
               </div>
             </form>
 
-            <div className="form-group">
-              <label htmlFor="maxOccurrences">Max Occurrences</label>
-              <input type="text" className="form-control" id="maxOccurrences" placeholder="1" value={this.state.maxOccurrences} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="displayPriority">Display Priority</label>
-              <input type="text" className="form-control" id="displayPriority" value={this.state.displayPriority} />
-            </div>
             <div className="form-group" id="targetingContainer">
               <label htmlFor="targeting">Targeting</label>
               <input type="text" className="form-control" id="targeting" value={this.state.targeting} readOnly />
@@ -378,6 +340,7 @@ class App extends Component {
 
         </div>
 
+        <UploadModal />
       </div>
     );
   }
