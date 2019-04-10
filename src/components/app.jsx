@@ -11,7 +11,9 @@ class App extends Component {
 
     this.state = {
       clients: [],
+      activities: [],
       selectedClient: null,
+      selectedActivity: null,
       hasLoaded: false,
       imageSrc: 'https://mywellmetrics.com/cfs-file.ashx/__key/CommunityServer-Components-PostAttachments/00-20-57-62-92/shrug.png',
       title: 'Your CIE will appear here',
@@ -26,9 +28,11 @@ class App extends Component {
     this.submitData = this.submitData.bind(this);
     this.setImage = this.setImage.bind(this);
     this.setTitle = this.setTitle.bind(this);
+    this.getAllActivities = this.getAllActivities.bind(this);
   }
 
   componentDidMount() {
+    $('#employerSpinner').css('display', 'inline-block');
     $.getJSON('https://api.airtable.com/v0/appHXXoVD1tn9QATh/Clients?api_key=keyCxnlep0bgotSrX&view=sorted').done(data => {
       let records = data.records;
 
@@ -44,13 +48,15 @@ class App extends Component {
         });
       }
 
+      $('#employerSpinner').css('display', 'none');
+
     });
   }
 
   getInitialData(e) {
     e.preventDefault();
 
-    const eventId = $('#eventId').val();
+    const eventId = this.state.selectedActivity.ChallengeId * -1;
 
     // Literally just used to get MaxOccurrences
     const url = `https://api.limeade.com/api/activity/${eventId}/Get?types=1&status=1&attributes=1&contents=31`;
@@ -121,7 +127,7 @@ class App extends Component {
     const psk = this.state.selectedClient.fields['Limeade PSK'];
 
     // Forced to use the old API... ughhh.
-    const csv = createCSV();
+    const csv = createCSV(this.state.selectedActivity);
     console.log(csv);
     uploadToLimeade(csv);
 
@@ -144,7 +150,7 @@ class App extends Component {
     }
 
     // Create a CSV for CIE uploads
-    function createCSV() {
+    function createCSV(activity) {
       let data = [[
         'EmployerName',
         'EventId',
@@ -182,7 +188,7 @@ class App extends Component {
       const eventName = $('.info-title').html();
       const htmlDescription = $('.description-text').html();
       const employerName = $('#employerName').val();
-      const eventId = $('#eventId').val();
+      const eventId = activity.ChallengeId * -1;
       const pointsAwarded = $('.info-points span').html();
       const fullImageUrl = $('.item-info-image').attr('src');
       const eventImageUrl = fullImageUrl.substring(fullImageUrl.indexOf('/cfs'));
@@ -255,6 +261,38 @@ class App extends Component {
 
   }
 
+  getAllActivities(client) {
+    if (client) {
+      if (client.fields['LimeadeAccessToken']) {
+        $('#cieSpinner').css('display', 'inline-block');
+
+        $.ajax({
+          url: 'https://api.limeade.com/api/admin/activity',
+          type: 'GET',
+          dataType: 'json',
+          headers: {
+            Authorization: 'Bearer ' + client.fields['LimeadeAccessToken']
+          },
+          contentType: 'application/json; charset=utf-8'
+        }).done(result => {
+          const activities = result.Data;
+
+          // Do stuff here
+          $('#cieSpinner').css('display', 'none');
+          this.setState({ activities: activities });
+
+        }).fail((xhr, textStatus, error) => {
+          console.error(`${client.fields['Account Name']} - GET ActivityLifecycle has failed`);
+        });
+
+      } else {
+        console.error(`${client.fields['Account Name']} has no LimeadeAccessToken`);
+      }
+    } else {
+      console.log('No client has been selected');
+    }
+  }
+
   setImage(src) {
     this.setState({
       imageSrc: src
@@ -270,14 +308,35 @@ class App extends Component {
   selectClient(e) {
     this.state.clients.forEach((client) => {
       if (client.fields['Limeade e='] === e.target.value) {
+        this.getAllActivities(client);
         this.setState({ selectedClient: client });
       }
     });
   }
 
+  selectActivity(e) {
+    // Filter to only include CIEs
+    const activities = this.state.activities.filter(activity => {
+      return activity.ChallengeId < 0;
+    });
+
+    this.setState({ selectedActivity: activities[e.target.value] });
+  }
+
   renderEmployerNames() {
-    return this.state.clients.map((client) => {
+    return this.state.clients.map(client => {
       return <option key={client.id}>{client.fields['Limeade e=']}</option>;
+    });
+  }
+
+  renderCIEs() {
+    // Filter to only include CIEs
+    const activities = this.state.activities.filter(activity => {
+      return activity.ChallengeId < 0;
+    });
+
+    return activities.map((activity, i)=> {
+      return <option key={i} value={i}>{activity.ChallengeId * -1} {activity.Name}</option>;
     });
   }
 
@@ -292,15 +351,22 @@ class App extends Component {
             <form id="form">
               <div className="form-group">
                 <label htmlFor="employerName">EmployerName</label>
+                <img src="images/spinner.svg" className="spinner" id="employerSpinner" />
                 <select id="employerName" className="form-control custom-select" onChange={(e) => this.selectClient(e)} disabled={this.state.hasLoaded}>
                   <option defaultValue>Select Employer</option>
                   {this.renderEmployerNames()}
                 </select>
               </div>
+
               <div className="form-group">
-                <label htmlFor="eventId">Event ID</label>
-                <input type="text" className="form-control" id="eventId" placeholder="2350" readOnly={this.state.hasLoaded} />
+                <label htmlFor="cieList">CIE List</label>
+                <img src="images/spinner.svg" className="spinner" id="cieSpinner" />
+                <select id="cieList" className="form-control custom-select" onChange={(e) => this.selectActivity(e)} disabled={this.state.hasLoaded}>
+                  <option defaultValue>Select a CIE</option>
+                  {this.renderCIEs()}
+                </select>
               </div>
+
               <div className="form-group">
                 <button type="submit" className="btn btn-primary" onClick={(e) => this.getInitialData(e)} disabled={this.state.hasLoaded}>Fetch CIE</button>
               </div>
