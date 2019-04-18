@@ -53,12 +53,11 @@ class App extends Component {
     });
   }
 
+  // Literally just used to get MaxOccurrences
   getInitialData(e) {
     e.preventDefault();
 
     const eventId = this.state.selectedActivity.ChallengeId * -1;
-
-    // Literally just used to get MaxOccurrences
     const url = `https://api.limeade.com/api/activity/${eventId}/Get?types=1&status=1&attributes=1&contents=31`;
     const headers = {
       Authorization: `Bearer ${this.state.selectedClient.fields['LimeadeAccessToken']}`
@@ -72,14 +71,18 @@ class App extends Component {
         console.log(event);
         const maxOccurrences = event.Reward.MaxCount;
 
-        this.getEventData(eventId, headers, maxOccurrences);
+        this.getEventData(maxOccurrences);
       }
     });
   }
 
-  getEventData(eventId, headers, maxOccurrences) {
-    // Gets all other data
+  // Gets all other data
+  getEventData(maxOccurrences) {
+    const eventId = this.state.selectedActivity.ChallengeId * -1;
     const url = `https://api.limeade.com/api/admin/activity/-${eventId}`;
+    const headers = {
+      Authorization: `Bearer ${this.state.selectedClient.fields['LimeadeAccessToken']}`
+    };
 
     $.ajax(url, {
       type: 'get',
