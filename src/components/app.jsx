@@ -116,7 +116,7 @@ class App extends Component {
           points: event.ActivityReward.Value,
           displayPriority: event.DisplayPriority,
           targeting: targetingText,
-          imageSrc: 'https://mywellmetrics.com' + event.ChallengeLogoURL,
+          imageSrc: event.ChallengeLogoURL,
           maxOccurrences: maxOccurrences,
           hasLoaded: true
         });
