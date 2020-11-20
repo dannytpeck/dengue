@@ -17,7 +17,7 @@ class App extends Component {
       hasLoaded: false,
       imageSrc: 'https://images.limeade.com/PDW/42709bb0-818f-4b37-94aa-0c9119e0c793-large.jpg',
       title: 'Your CIE will appear here',
-      description: '<div style="font-size: 14px; line-height: 1.3em"><div><p>Here you can write some additional details about how to complete the challenge. You could also add some tips for people at different skill levels for the activity.</p></div><p style="font-size: 9px;"><span>&copy; Copyright 3030 </span><a href="http://www.adurolife.com" target="_blank" style="text-decoration: none;">ADURO, INC.</a><span> All rights reserved.</span></p></div>',
+      description: '<p>Here you can write some additional details about how to complete the challenge. You could also add some tips for people at different skill levels for the activity.</p><p style="font-size: 9px;">&copy; Copyright 3030 <a style="text-decoration: none;" href="http://www.adurolife.com" target="_blank" rel="noopener">ADURO, INC.</a> All rights reserved.</p>',
       points: '100',
       maxOccurrences: '',
       displayPriority: '',
